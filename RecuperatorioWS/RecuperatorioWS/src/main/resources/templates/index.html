@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Recuperatorio de WebSocket</title>
+	</head>
+	<body>
+		<input type="text" id="inpPass" placeholder="Email">
+		<input type="text" id="inpUser" placeholder="Pssword">
+		<button onclick="sendMessage()">Send</button>	
+		<div id="divMsgs"></div>
+		
+		<script th:inline="javascript">
+			let socket = new WebSocket("ws://localhost:8080/chat");
+			
+			socket.onmessage = function(event){
+				let divMsgs = document.getElementById("divMsgs");
+				divMsgs.innerHTML += '<p>' + event.data + '</p>';
+			}
+			
+			function sendMessage(){
+				let password = document.getElementById("inpUser");
+				let email = document.getElementById("inpPass");
+				
+				let fullMessage = password.value + ": " + email.value;
+				socket.send(fullMessage);
+				messageInput.value = '';
+			}
+		</script>
+	</body>
+</html>
+
